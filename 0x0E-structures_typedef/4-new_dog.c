@@ -1,34 +1,87 @@
 #include <stdlib.h>
 #include "dog.h"
 
-#include <string.h>
 
-typedef struct dog 
+/**
+ * _strlen - Returns the length of a string
+ *
+ * @s: Pointer to string
+ *
+ * Return: Length of string
+ */
+int _strlen(char *s)
 {
-char *name;
-float age;
-char *owner;
+int len = 0;
 
-} dog_t;
+while (s[len] != '\0')
+len++;
 
-dog_t *new_dog(char *name, float age, char *owner) {
-dog_t *new_dog = malloc(sizeof(dog_t));
-if (new_dog == NULL) {
-return NULL;
+return (len);
 }
-new_dog->name = malloc(strlen(name) + 1);
-if (new_dog->name == NULL) {
-free(new_dog);
-return NULL;
+
+
+/**
+ * _strcpy - Copies the string pointed to by src,
+ * including the terminating null byte (\0), to the buffer pointed to by dest.
+ *
+ * @dest: Pointer to destination buffer
+ * @src: Pointer to source string
+ *
+ * Return: Pointer to destination buffer
+ */
+char *_strcpy(char *dest, char *src)
+{
+int i;
+
+for (i = 0; src[i] != '\0'; i++)
+dest[i] = src[i];
+
+dest[i] = '\0';
+
+return (dest);
 }
-strcpy(new_dog->name, name);
-new_dog->age = age;
-new_dog->owner = malloc(strlen(owner) + 1);
-if (new_dog->owner == NULL) {
-free(new_dog->name);
-free(new_dog);
-return NULL;
+
+/**
+ * new_dog - creates a new dog
+ *
+ * @name: name of the dog
+ * @age: age of the dog
+ * @owner: owner of the dog
+ *
+ * Return: pointer to the new dog (Success), NULL otherwise
+ */
+dog_t *new_dog(char *name, float age, char *owner)
+{
+dog_t *dog;
+int len1, len2;
+
+
+len1 = _strlen(name);
+len2 = _strlen(owner);
+
+
+dog = malloc(sizeof(dog_t));
+if (dog == NULL)
+return (NULL);
+
+
+dog->name = malloc(sizeof(char) * (len1 + 1));
+if (dog->name == NULL)
+{
+free(dog);
+return (NULL);
 }
-strcpy(new_dog->owner, owner);
-return new_dog;
+dog->owner = malloc(sizeof(char) * (len2 + 1));
+if (dog->owner == NULL)
+{
+free(dog);
+free(dog->name);
+return (NULL);
+}
+_strcpy(dog->name, name);
+_strcpy(dog->owner, owner);
+dog->age = age;
+
+
+return (dog);
 }
